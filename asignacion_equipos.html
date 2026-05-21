@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -73,49 +72,37 @@
       </div>
     </div>
   </div>
+
   <div class="card">
-
-    <p class="card-label">03 — Nombre asignacion</p>
-
-  <div class="row3" style="margin-top:12px;">
-  <div class="field">
-  <label>Marca</label>
-  <select id="marca" onchange="onMarcaChange()">
-    <option value="">Seleccionar</option>
-  </select>
-</div>
-<div class="field">
-  <!-- <select id="modelo" onchange="calcularEquipo()">
-    <option value="">Seleccionar</option>
-  </select> -->
-  <div class="field">
-  <label>Modelo</label>
-  <div class="autocomplete-wrap">
-    <input
-      type="text"
-      id="modelo"
-      placeholder="Escribe para buscar..."
-      autocomplete="off"
-      oninput="onModeloInput()"
-      onkeydown="onModeloKey(event)"
-      onblur="onModeloBlur()"
-    />
-    <div class="autocomplete-list" id="ac-modelo-list"></div>
+    <p class="card-label">03 — Nombre asignación</p>
+    <div class="row3" style="margin-top:12px;">
+      <div class="field">
+        <label>Marca</label>
+        <select id="marca" onchange="onMarcaChange()">
+          <option value="">Seleccionar</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Modelo</label>
+        <div class="autocomplete-wrap">
+          <input
+            type="text"
+            id="modelo"
+            placeholder="Escribe para buscar..."
+            autocomplete="off"
+            oninput="onModeloInput()"
+            onkeydown="onModeloKey(event)"
+            onblur="onModeloBlur()"
+          />
+          <div class="autocomplete-list" id="ac-modelo-list"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Serie</label>
+        <input type="text" id="serie" placeholder="Ej: PF3XY1A2" oninput="calcularEquipo()" />
+      </div>
+    </div>
   </div>
-</div>
-</div>
-  <div class="field">
-  <label>Serie</label>
-  <input type="text" id="serie" placeholder="Ej: PF3XY1A2" oninput="calcularEquipo()" />
-  </div>
-  </div>
-  </div>
-  
-  <div>
-
-
-  </div>
-  
 
   <div class="result-card" id="result-card">
     <p class="result-label">Nombre generado</p>
@@ -123,12 +110,13 @@
     <div class="pills" id="pills"></div>
     <button class="copy-btn" id="copy-btn" onclick="copiar()">Copiar nombre</button>
   </div>
+
   <div class="result-card" id="result-card-equipo" style="margin-top:1rem;">
-  <p class="result-label">Nombre de equipo</p>
-  <p class="result-code" id="result-code-equipo">—</p>
-  <div class="pills" id="pills-equipo"></div>
-  <button class="copy-btn" id="copy-btn-equipo" onclick="copiarEquipo()">Copiar nombre</button>
-</div>
+    <p class="result-label">Nombre de equipo</p>
+    <p class="result-code" id="result-code-equipo">—</p>
+    <div class="pills" id="pills-equipo"></div>
+    <button class="copy-btn" id="copy-btn-equipo" onclick="copiarEquipo()">Copiar nombre</button>
+  </div>
 </div>
 
 <script src="js/options.js"></script>
@@ -142,11 +130,22 @@ let ready = false;
 let acIndex = -1;
 let acBlurTimer = null;
 
+// Normaliza una clave: mayúsculas, sin tildes, sin espacios extra
+function normalizarClave(k) {
+  return String(k).trim().toUpperCase()
+    .replace(/[ÁÀÂÄ]/g, "A")
+    .replace(/[ÉÈÊË]/g, "E")
+    .replace(/[ÍÌÎÏ]/g, "I")
+    .replace(/[ÓÒÔÖ]/g, "O")
+    .replace(/[ÚÙÛÜ]/g, "U")
+    .replace(/[Ñ]/g, "N");
+}
+
 async function cargarDatos() {
   const badge = document.getElementById("conn-badge");
   try {
     const resp = await fetch(SHEET_URL);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
     const buffer = await resp.arrayBuffer();
     const wb = XLSX.read(buffer, { type: "array" });
     const ws = wb.Sheets[wb.SheetNames[0]];
@@ -154,17 +153,32 @@ async function cargarDatos() {
 
     cecoMap = {};
     cecoList = [];
+
     data.forEach(function(row) {
-      const ceco = (row["CECO"] || "").toString().trim().toUpperCase();
-      if (ceco) {
-        cecoMap[ceco] = row;
-        cecoList.push({ ceco: ceco, desc: (row["DESCRIPCIÓN"] || "").toString().trim() });
-      }
+      // Normalizar todas las claves de la fila
+      var rowNorm = {};
+      Object.keys(row).forEach(function(k) {
+        rowNorm[normalizarClave(k)] = row[k];
+      });
+
+      var ceco = (rowNorm["CECO"] || "").toString().trim().toUpperCase();
+      if (!ceco) return;
+
+      cecoMap[ceco] = {
+        SIGLA:    (rowNorm["SIGLA"]    || "").toString().trim(),
+        GERENCIA: (rowNorm["GERENCIA"] || "").toString().trim(),
+        JEFATURA: (rowNorm["JEFATURA"] || "").toString().trim(),
+        DESC:     (rowNorm["DESCRIPCION"] || "").toString().trim(),
+      };
+
+      cecoList.push({
+        ceco: ceco,
+        desc: (rowNorm["DESCRIPCION"] || "").toString().trim()
+      });
     });
 
     ready = true;
-    const n = cecoList.length;
-    badge.innerHTML = '<span class="dot"></span> conectado &middot; ' + n + ' CECOs';
+    badge.innerHTML = '<span class="dot"></span> conectado &middot; ' + cecoList.length + ' CECOs';
     badge.className = "badge ok";
   } catch(err) {
     badge.innerHTML = '<span class="dot"></span> error: ' + err.message;
@@ -173,20 +187,20 @@ async function cargarDatos() {
 }
 
 function onCecoInput() {
-  const val = document.getElementById("ceco").value.trim().toUpperCase();
+  var val = document.getElementById("ceco").value.trim().toUpperCase();
   acIndex = -1;
   if (!val || val.length < 3) { cerrarAc(); limpiarCeco(); calcular(); return; }
-  const matches = cecoList.filter(function(item) {
-    return item.ceco.includes(val);
+  var matches = cecoList.filter(function(item) {
+    return item.ceco.includes(val) || item.desc.toUpperCase().includes(val);
   }).slice(0, 10);
   renderAc(matches, val);
 }
 
 function renderAc(matches, query) {
-  const list = document.getElementById("ac-list");
+  var list = document.getElementById("ac-list");
   if (!matches.length) { cerrarAc(); return; }
   list.innerHTML = matches.map(function(item) {
-    const highlighted = item.ceco.replace(query, '<span class="ac-match">' + query + '</span>');
+    var highlighted = item.ceco.replace(query, '<span class="ac-match">' + query + '</span>');
     return '<div class="autocomplete-item" data-ceco="' + item.ceco + '" onmousedown="seleccionarCeco(\'' + item.ceco + '\')">' +
       '<span class="ac-ceco">' + highlighted + '</span>' +
       '<span class="ac-desc">' + item.desc + '</span>' +
@@ -208,8 +222,8 @@ function seleccionarCeco(ceco) {
 }
 
 function onCecoKey(e) {
-  const list = document.getElementById("ac-list");
-  const items = list.querySelectorAll(".autocomplete-item");
+  var list = document.getElementById("ac-list");
+  var items = list.querySelectorAll(".autocomplete-item");
   if (!items.length) return;
   if (e.key === "ArrowDown") {
     e.preventDefault();
@@ -230,19 +244,19 @@ function onCecoKey(e) {
 function onCecoBlur() {
   acBlurTimer = setTimeout(function() {
     cerrarAc();
-    const val = document.getElementById("ceco").value.trim().toUpperCase();
+    var val = document.getElementById("ceco").value.trim().toUpperCase();
     if (val) aplicarCeco(val);
   }, 200);
 }
 
 function aplicarCeco(ceco) {
-  const hint = document.getElementById("ceco-hint");
-  const row = cecoMap[ceco];
+  var hint = document.getElementById("ceco-hint");
+  var row = cecoMap[ceco];
   if (row) {
-    document.getElementById("sigla").value = row["SIGLA"] || "";
-    document.getElementById("gerencia").value = row["GERENCIA"] || "";
-    document.getElementById("jefatura").value = row["JEFATURA"] || "";
-    hint.textContent = row["DESCRIPCIÓN"] || "";
+    document.getElementById("sigla").value    = row.SIGLA    || "";
+    document.getElementById("gerencia").value = row.GERENCIA || "";
+    document.getElementById("jefatura").value = row.JEFATURA || "";
+    hint.textContent = row.DESC || "";
     hint.className = "hint ok";
   } else {
     limpiarCeco();
@@ -253,15 +267,15 @@ function aplicarCeco(ceco) {
 }
 
 function limpiarCeco() {
-  ["sigla","gerencia","jefatura"].forEach(function(id) {
+  ["sigla", "gerencia", "jefatura"].forEach(function(id) {
     document.getElementById(id).value = "";
   });
 }
 
 function copiar() {
-  const code = document.getElementById("result-code").textContent;
+  var code = document.getElementById("result-code").textContent;
   navigator.clipboard.writeText(code).then(function() {
-    const btn = document.getElementById("copy-btn");
+    var btn = document.getElementById("copy-btn");
     btn.textContent = "¡Copiado!";
     btn.classList.add("done");
     setTimeout(function() { btn.textContent = "Copiar nombre"; btn.classList.remove("done"); }, 2000);
@@ -271,6 +285,5 @@ function copiar() {
 inicializarSelects();
 cargarDatos();
 </script>
-</body>
 </body>
 </html>
