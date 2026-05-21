@@ -1,0 +1,307 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #e2e0d8;
+  --text: #1a1916;
+  --text-muted: #7a7870;
+  --accent: #2a5cff;
+  --success: #1a7a4a;
+  --success-bg: #eaf5ef;
+  --danger: #c0392b;
+  --danger-bg: #fdf0ef;
+  --warning: #996600;
+  --warning-bg: #fff8e6;
+  --mono: "DM Mono", monospace;
+  --sans: "DM Sans", sans-serif;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+  font-size: 15px;
+}
+.page {
+  max-width: 680px;
+  margin: 0 auto;
+}
+header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+header p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-left: 10px;
+  vertical-align: middle;
+  font-family: var(--mono);
+}
+.badge.neutral {
+  background: #ebebeb;
+  color: var(--text-muted);
+}
+.badge.ok {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.badge.err {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.badge.loading {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.card-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  font-family: var(--mono);
+}
+.field {
+  margin-bottom: 1.1rem;
+}
+.field:last-child {
+  margin-bottom: 0;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+.field input,
+.field select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  padding: 0 12px;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+.field input:focus,
+.field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(42, 92, 255, 0.08);
+}
+.field input[readonly] {
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: default;
+}
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7870' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.hint {
+  font-size: 11px;
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+.hint.err {
+  color: var(--danger);
+}
+.hint.ok {
+  color: var(--success);
+}
+.debug-box {
+  background: #1a1916;
+  color: #a8ff78;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+  line-height: 1.6;
+  display: none;
+}
+.debug-box.visible {
+  display: block;
+}
+.result-card {
+  background: var(--text);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-top: 0.5rem;
+  display: none;
+}
+.result-card.visible {
+  display: block;
+}
+.result-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 8px;
+  font-family: var(--mono);
+}
+.result-code {
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+.pill {
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--mono);
+}
+.pill b {
+  color: #fff;
+  font-weight: 500;
+}
+.copy-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.copy-btn.done {
+  background: rgba(26, 122, 74, 0.4);
+  border-color: rgba(26, 122, 74, 0.5);
+}
+@media (max-width: 480px) {
+  .row2,
+  .row3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.autocomplete-wrap {
+  position: relative;
+}
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e2e0d8;
+  border-radius: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: none;
+}
+.autocomplete-list.open {
+  display: block;
+}
+.autocomplete-item {
+  padding: 9px 14px;
+  font-size: 13px;
+  font-family: "DM Mono", monospace;
+  cursor: pointer;
+  border-bottom: 1px solid #f0ede6;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+.autocomplete-item:hover,
+.autocomplete-item.active {
+  background: #f5f4f0;
+}
+.ac-ceco {
+  font-weight: 500;
+  color: #1a1916;
+  min-width: 120px;
+}
+.ac-desc {
+  color: #7a7870;
+  font-size: 11px;
+  font-family: "DM Sans", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ac-match {
+  color: #2a5cff;
+}

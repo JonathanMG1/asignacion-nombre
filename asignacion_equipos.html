@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Asignación de equipos</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Asignación de equipos <span class="badge loading" id="conn-badge"><span class="dot"></span>cargando...</span></h1>
+    <p>Genera el nombre del equipo automáticamente desde tu Google Sheet.</p>
+  </header>
+
+  <div class="card">
+    <p class="card-label">01 — Colaborador</p>
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="nombre" placeholder="Ej: Carlos Alberto Cuevas Cuevas" oninput="calcular()" />
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>CECO</label>
+        <div class="autocomplete-wrap">
+          <input
+            type="text"
+            id="ceco"
+            placeholder="Escribe para buscar..."
+            autocomplete="off"
+            oninput="onCecoInput()"
+            onkeydown="onCecoKey(event)"
+            onblur="onCecoBlur()"
+          />
+          <div class="autocomplete-list" id="ac-list"></div>
+        </div>
+        <p class="hint" id="ceco-hint"></p>
+      </div>
+      <div class="field">
+        <label>Jefatura</label>
+        <input type="text" id="jefatura" readonly placeholder="Auto desde CECO" />
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Gerencia</label>
+        <input type="text" id="gerencia" readonly placeholder="Auto desde CECO" />
+      </div>
+      <div class="field">
+        <label>Sigla</label>
+        <input type="text" id="sigla" readonly placeholder="Auto desde CECO" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-label">02 — Equipo</p>
+    <div class="row3">
+      <div class="field">
+        <label>Tipo de asignación</label>
+        <select id="tipo" onchange="calcular()"></select>
+      </div>
+      <div class="field">
+        <label>Equipo</label>
+        <select id="equipo" onchange="calcular(); calcularEquipo()"></select>
+      </div>
+      <div class="field">
+        <label>Ciudad</label>
+        <select id="ciudad" onchange="calcular()"></select>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+
+    <p class="card-label">03 — Nombre asignacion</p>
+
+  <div class="row3" style="margin-top:12px;">
+  <div class="field">
+  <label>Marca</label>
+  <select id="marca" onchange="onMarcaChange()">
+    <option value="">Seleccionar</option>
+  </select>
+</div>
+<div class="field">
+  <!-- <select id="modelo" onchange="calcularEquipo()">
+    <option value="">Seleccionar</option>
+  </select> -->
+  <div class="field">
+  <label>Modelo</label>
+  <div class="autocomplete-wrap">
+    <input
+      type="text"
+      id="modelo"
+      placeholder="Escribe para buscar..."
+      autocomplete="off"
+      oninput="onModeloInput()"
+      onkeydown="onModeloKey(event)"
+      onblur="onModeloBlur()"
+    />
+    <div class="autocomplete-list" id="ac-modelo-list"></div>
+  </div>
+</div>
+</div>
+  <div class="field">
+  <label>Serie</label>
+  <input type="text" id="serie" placeholder="Ej: PF3XY1A2" oninput="calcularEquipo()" />
+  </div>
+  </div>
+  </div>
+  
+  <div>
+
+
+  </div>
+  
+
+  <div class="result-card" id="result-card">
+    <p class="result-label">Nombre generado</p>
+    <p class="result-code" id="result-code">—</p>
+    <div class="pills" id="pills"></div>
+    <button class="copy-btn" id="copy-btn" onclick="copiar()">Copiar nombre</button>
+  </div>
+  <div class="result-card" id="result-card-equipo" style="margin-top:1rem;">
+  <p class="result-label">Nombre de equipo</p>
+  <p class="result-code" id="result-code-equipo">—</p>
+  <div class="pills" id="pills-equipo"></div>
+  <button class="copy-btn" id="copy-btn-equipo" onclick="copiarEquipo()">Copiar nombre</button>
+</div>
+</div>
+
+<script src="js/options.js"></script>
+<script src="js/function.js"></script>
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbw6fnvvWZd0JJYc6YBDMl-2RWQ0Tcseaz54MSQZLw-t31zHqXzcMne-uQfu66PC1s5S/exec";
+
+let cecoMap = {};
+let cecoList = [];
+let ready = false;
+let acIndex = -1;
+let acBlurTimer = null;
+
+async function cargarDatos() {
+  const badge = document.getElementById("conn-badge");
+  try {
+    const res = await fetch(SHEET_URL + "?v=" + Date.now());
+    const data = await res.json();
+    cecoMap = {};
+    cecoList = [];
+    data.forEach(function(row) {
+      const ceco = (row["CECO"] || "").toString().trim().toUpperCase();
+      if (ceco) {
+        cecoMap[ceco] = row;
+        cecoList.push({ ceco: ceco, desc: (row["DESCRIPCIÓN"] || "").toString().trim() });
+      }
+    });
+    ready = true;
+    const n = cecoList.length;
+    badge.innerHTML = '<span class="dot"></span> conectado &middot; ' + n + ' CECOs';
+    badge.className = "badge ok";
+  } catch(err) {
+    badge.innerHTML = '<span class="dot"></span> error';
+    badge.className = "badge err";
+  }
+}
+
+function onCecoInput() {
+  const val = document.getElementById("ceco").value.trim().toUpperCase();
+  acIndex = -1;
+  if (!val || val.length < 3) { cerrarAc(); limpiarCeco(); calcular(); return; }
+  const matches = cecoList.filter(function(item) {
+    return item.ceco.includes(val);
+  }).slice(0, 10);
+  renderAc(matches, val);
+}
+
+function renderAc(matches, query) {
+  const list = document.getElementById("ac-list");
+  if (!matches.length) { cerrarAc(); return; }
+  list.innerHTML = matches.map(function(item) {
+    const highlighted = item.ceco.replace(query, '<span class="ac-match">' + query + '</span>');
+    return '<div class="autocomplete-item" data-ceco="' + item.ceco + '" onmousedown="seleccionarCeco(\'' + item.ceco + '\')">' +
+      '<span class="ac-ceco">' + highlighted + '</span>' +
+      '<span class="ac-desc">' + item.desc + '</span>' +
+      '</div>';
+  }).join("");
+  list.className = "autocomplete-list open";
+}
+
+function cerrarAc() {
+  document.getElementById("ac-list").className = "autocomplete-list";
+  document.getElementById("ac-list").innerHTML = "";
+  acIndex = -1;
+}
+
+function seleccionarCeco(ceco) {
+  document.getElementById("ceco").value = ceco;
+  cerrarAc();
+  aplicarCeco(ceco);
+}
+
+function onCecoKey(e) {
+  const list = document.getElementById("ac-list");
+  const items = list.querySelectorAll(".autocomplete-item");
+  if (!items.length) return;
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    acIndex = Math.min(acIndex + 1, items.length - 1);
+    items.forEach(function(el, i) { el.classList.toggle("active", i === acIndex); });
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    acIndex = Math.max(acIndex - 1, 0);
+    items.forEach(function(el, i) { el.classList.toggle("active", i === acIndex); });
+  } else if (e.key === "Enter" && acIndex >= 0) {
+    e.preventDefault();
+    seleccionarCeco(items[acIndex].dataset.ceco);
+  } else if (e.key === "Escape") {
+    cerrarAc();
+  }
+}
+
+function onCecoBlur() {
+  acBlurTimer = setTimeout(function() {
+    cerrarAc();
+    const val = document.getElementById("ceco").value.trim().toUpperCase();
+    if (val) aplicarCeco(val);
+  }, 200);
+}
+
+function aplicarCeco(ceco) {
+  const hint = document.getElementById("ceco-hint");
+  const row = cecoMap[ceco];
+  if (row) {
+    document.getElementById("sigla").value = row["SIGLA"] || "";
+    document.getElementById("gerencia").value = row["GERENCIA"] || "";
+    document.getElementById("jefatura").value = row["JEFATURA"] || "";
+    hint.textContent = row["DESCRIPCIÓN"] || "";
+    hint.className = "hint ok";
+  } else {
+    limpiarCeco();
+    hint.textContent = "CECO no encontrado.";
+    hint.className = "hint err";
+  }
+  calcular();
+}
+
+function limpiarCeco() {
+  ["sigla","gerencia","jefatura"].forEach(function(id) {
+    document.getElementById(id).value = "";
+  });
+}
+
+function copiar() {
+  const code = document.getElementById("result-code").textContent;
+  navigator.clipboard.writeText(code).then(function() {
+    const btn = document.getElementById("copy-btn");
+    btn.textContent = "¡Copiado!";
+    btn.classList.add("done");
+    setTimeout(function() { btn.textContent = "Copiar nombre"; btn.classList.remove("done"); }, 2000);
+  });
+}
+
+inicializarSelects();
+cargarDatos();
+</script>
+</body>
+</body>
+</html>
