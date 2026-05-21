@@ -7,6 +7,7 @@
 <title>Asignación de equipos</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 <div class="page">
@@ -133,7 +134,7 @@
 <script src="js/options.js"></script>
 <script src="js/function.js"></script>
 <script>
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbw6fnvvWZd0JJYc6YBDMl-2RWQ0Tcseaz54MSQZLw-t31zHqXzcMne-uQfu66PC1s5S/exec";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/16RL2XVOHfSSOuR4nOl4zrbR_PPdgI-yTX779-GP0RL0/export?format=xlsx";
 
 let cecoMap = {};
 let cecoList = [];
@@ -144,8 +145,13 @@ let acBlurTimer = null;
 async function cargarDatos() {
   const badge = document.getElementById("conn-badge");
   try {
-    const res = await fetch(SHEET_URL + "?v=" + Date.now());
-    const data = await res.json();
+    const resp = await fetch(SHEET_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const buffer = await resp.arrayBuffer();
+    const wb = XLSX.read(buffer, { type: "array" });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const data = XLSX.utils.sheet_to_json(ws, { defval: "" });
+
     cecoMap = {};
     cecoList = [];
     data.forEach(function(row) {
@@ -155,12 +161,13 @@ async function cargarDatos() {
         cecoList.push({ ceco: ceco, desc: (row["DESCRIPCIÓN"] || "").toString().trim() });
       }
     });
+
     ready = true;
     const n = cecoList.length;
     badge.innerHTML = '<span class="dot"></span> conectado &middot; ' + n + ' CECOs';
     badge.className = "badge ok";
   } catch(err) {
-    badge.innerHTML = '<span class="dot"></span> error';
+    badge.innerHTML = '<span class="dot"></span> error: ' + err.message;
     badge.className = "badge err";
   }
 }
