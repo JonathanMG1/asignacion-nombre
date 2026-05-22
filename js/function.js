@@ -56,7 +56,7 @@ const modelo = (modeloInput.dataset.value || modeloInput.value).trim();
   const primerNombre = (partes[0] || "").toUpperCase();
   const apellido = (partes[partes.length - 1] || "").toUpperCase();
 
-  const code = "ASIG_" + equipoAbrev + "_" +
+  const code = "ASI_" + equipoAbrev + "_" +
     marca.toUpperCase().replace(/\s+/g, "") + "_" +
     modelo.toUpperCase().replace(/\s+/g, "") + "_" +
     serie.toUpperCase().replace(/\s+/g, "") + "_" +
