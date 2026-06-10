@@ -84,19 +84,19 @@ const MODELOS = {
 };
 
 const GENERICOS = [
-  { value: "DEVOLUCION", label: "Devolución" },
-  { value: "BODEGA", label: "Bodega" },
-  { value: "IMPRESION", label: "Impresión" },
-  { value: "RECEPCION", label: "Recepción" },
-  { value: "ADMINISTRACION", label: "Administración" },
-  { value: "FINANZAS", label: "Finanzas" },
-  { value: "RRHH", label: "RRHH" },
-  { value: "GERENCIA", label: "Gerencia" },
-  { value: "SOPORTE", label: "Soporte TI" },
-  { value: "PANOLTI", label: "PANOLTI" },
+  { value: "ADMINISTRACION Y FINANZAS", label: "Administración y finanzas" },
+  { value: "INFORMATICA", label: "Informática" },
+  { value: "PERSONAS", label: "Personas" },
+  { value: "COMERCIAL", label: "Comercial" },
+  { value: "LEGAL", label: "Legal" },
+  { value: "MARKETING", label: "Marketing" },
+  { value: "DISTRIBUCIÓN", label: "Distribución" },
+  { value: "LOGISTICA", label: "Logística" },
+  { value: "REGIONES", label: "Regiones" },
+  { value: "PANOLTI", label: "Panol TI" },
 ];
 const GERENCIAS = [
-  { value: "ADMINISTRACION", label: "Administración y finanzas" },
+  { value: "ADMINISTRACION Y FINANZAS", label: "Administración y finanzas" },
   { value: "INFORMATICA", label: "Informática" },
   { value: "ALMACEN 1", label: "Almacen 1" },
   { value: "ALMACEN 2", label: "Almacen 2" },
