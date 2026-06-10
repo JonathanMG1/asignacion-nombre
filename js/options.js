@@ -93,6 +93,7 @@ const GENERICOS = [
   { value: "RRHH", label: "RRHH" },
   { value: "GERENCIA", label: "Gerencia" },
   { value: "SOPORTE", label: "Soporte TI" },
+  { value: "PANOLTI", label: "PANOLTI" },
 ];
 const GERENCIAS = [
   { value: "ADMINISTRACION", label: "Administración y finanzas" },
