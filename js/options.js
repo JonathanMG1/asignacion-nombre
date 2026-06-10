@@ -83,7 +83,7 @@ const MODELOS = {
   ],
 };
 
-const GENERICOS = [
+const GERENCIAS = [
   { value: "ADMINISTRACION Y FINANZAS", label: "Administración y finanzas" },
   { value: "INFORMATICA", label: "Informática" },
   { value: "PERSONAS", label: "Personas" },
@@ -95,7 +95,7 @@ const GENERICOS = [
   { value: "REGIONES", label: "Regiones" },
   { value: "PANOLTI", label: "Panol TI" },
 ];
-const GERENCIAS = [
+const GENERICOS = [
   { value: "ADMINISTRACION Y FINANZAS", label: "Administración y finanzas" },
   { value: "INFORMATICA", label: "Informática" },
   { value: "ALMACEN 1", label: "Almacen 1" },
