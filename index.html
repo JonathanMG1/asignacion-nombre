@@ -23,7 +23,7 @@
 
       <!-- Modo -->
       <div class="field">
-        <label>Tipo de hostname</label>
+        <label>Tipo de Nombre</label>
         <select id="modo" onchange="onModoChange()">
           <option value="NOMINAL">Nominal — persona</option>
           <option value="GENERICO">Genérico — área</option>
@@ -32,13 +32,13 @@
 
       <!-- Nombre (modo Nominal) -->
       <div class="field" id="campo-nombre">
-        <label>Nombre completo</label>
-        <input type="text" id="nombre" placeholder="Ej: Carlos Alberto Cuevas Cuevas" oninput="calcular()" />
+        <label>Nombre y Apellido</label>
+        <input type="text" id="nombre" placeholder="Ej: Juanito Perez" oninput="calcular()" />
       </div>
 
       <!-- Genérico (modo Genérico) -->
       <div class="field" id="campo-generico" style="display:none;">
-        <label>Área / Concepto genérico</label>
+        <label>Área</label>
         <select id="generico" onchange="calcular()">
           <option value="">Seleccionar</option>
         </select>
