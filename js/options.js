@@ -13,8 +13,7 @@ const EQUIPOS = [
   { value: "IMP", label: "Impresora Termica" },
   { value: "LEC", label: "Lector de codigo de Barras" },
   { value: "PDA", label: "PDA" },
-  { value: "MON", label: "Monitor" }
-
+  { value: "MON", label: "Monitor" },
 ];
 
 const MARCAS = [

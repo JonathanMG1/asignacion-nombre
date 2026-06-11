@@ -72,7 +72,6 @@
       </div>
     </div>
     <div class="card">
-
       <p class="card-label">03 — Nombre asignacion</p>
 
       <div class="row3" style="margin-top:12px;">
@@ -86,11 +85,9 @@
 
           <div class="field">
             <label>Modelo</label>
-            <div class="autocomplete-wrap">
-              <input type="text" id="modelo" placeholder="Escribe para buscar..." autocomplete="off"
-                oninput="onModeloInput()" onkeydown="onModeloKey(event)" onblur="onModeloBlur()" />
-              <div class="autocomplete-list" id="ac-modelo-list"></div>
-            </div>
+            <select id="modelo" onchange="calcularEquipo()">
+              <option value="">Seleccionar</option>
+            </select>
           </div>
         </div>
         <div class="field">
@@ -113,8 +110,6 @@
     </div>
   </div>
 
-  <script src="js/options.js"></script>
-  <script src="js/function.js"></script>
   <script src="js/options.js"></script>
   <script src="js/function.js"></script>
   <script>

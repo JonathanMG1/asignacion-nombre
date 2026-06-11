@@ -131,7 +131,9 @@ function copiarEquipo() {
 function onMarcaChange() {
   const marca = document.getElementById("marca").value;
   const selectModelo = document.getElementById("modelo");
+
   selectModelo.innerHTML = '<option value="">Seleccionar</option>';
+
   if (marca && MODELOS[marca]) {
     MODELOS[marca].forEach(function (m) {
       const op = document.createElement("option");
@@ -140,6 +142,7 @@ function onMarcaChange() {
       selectModelo.appendChild(op);
     });
   }
+
   calcularEquipo();
 }
 let acModeloIndex = -1;
@@ -267,4 +270,3 @@ function onModoChange() {
   }
   calcular();
 }
-
