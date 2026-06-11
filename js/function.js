@@ -251,7 +251,6 @@ function onModoChange() {
     campoGenerico.style.display = "block";
     document.getElementById("nombre").value = "";
 
-    // Poblar genéricos la primera vez
     const sel = document.getElementById("generico");
     if (sel.options.length <= 1) {
       GENERICOS.forEach(function (g) {

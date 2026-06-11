@@ -13,16 +13,55 @@ const EQUIPOS = [
   { value: "IMP", label: "Impresora Termica" },
   { value: "LEC", label: "Lector de codigo de Barras" },
   { value: "PDA", label: "PDA" },
+  { value: "MON", label: "Monitor" }
+
 ];
 
 const MARCAS = [
   { value: "LENOVO", label: "Lenovo" },
   { value: "HP", label: "HP" },
+  { value: "ZEBRA", label: "Zebra" },
+  { value: "UNITECH", label: "Unitech" },
+  { value: "HONEYWELL", label: "Honeywell" },
+  { value: "SAMSUNG", label: "Samsung" },
+  { value: "DELL", label: "Dell" },
+  { value: "ASUS", label: "Asus" },
+  { value: "APPLE", label: "Apple" },
 ];
 
 const MODELOS = {
-  LENOVO: [{ value: "THINKPADL14GEN6", label: "ThinkPad L14 Gen 6" }],
+  LENOVO: [
+    { value: "THINKPADL14GEN6", label: "ThinkPad L14 Gen 6" },
+    { value: "THINKPADS24E", label: "THINKPAD S24E" },
+    { value: "THINKPADL14GEN5", label: "ThinkPad L14 Gen 5" },
+    { value: "THINKCENTREM73", label: "ThinkCentre M73" },
+  ],
+  ZEBRA: [
+    { value: "ZD220", label: "Zebra ZD220" },
+    { value: "GC420T", label: "Zebra GC420T" },
+    { value: "ZT411", label: "Zebra ZT411" },
+    { value: "ZT411", label: "Zebra ZT400" },
+    { value: "ZD230", label: "Zebra ZD230" },
+    { value: "ZD421", label: "Zebra ZD421" },
+    { value: "BARPOS9335", label: "Barpos 9335" },
+    { value: "GK420T", label: "Zebra GK420T" },
+    { value: "DS2278", label: "Zebra DS2278" },
+  ],
 
+  SAMSUNG: [
+    { value: "F24T400FHL", label: "F24T400FHL" },
+    { value: "S19C150F", label: "S19C150F" },
+    { value: "S24A336NHL", label: "S24A336NHL" },
+  ],
+  DELL: [{ value: "DELL", label: "Dell" }],
+  ASUS: [{ value: "VZ249", label: "VZ249" }],
+
+  LG: [{ value: "20MK400H", label: "20MK400H" }],
+  APPLE: [
+    { value: "MACBOOK 13", label: "MacBook 13" },
+    { value: "MACBOOK 14", label: "MacBook 14" },
+    { value: "MACBOOK 16", label: "MacBook 16" },
+  ],
   HP: [
     // — EliteBook Serie 600 —
     { value: "ELITEBOOK630G9", label: "EliteBook 630 G9" },
@@ -80,6 +119,20 @@ const MODELOS = {
     { value: "PROBOOK455G10", label: "ProBook 455 G10" },
     { value: "PROBOOK460G11", label: "ProBook 460 G11" },
     { value: "PROBOOK465G11", label: "ProBook 465 G11" },
+    { value: "ZBOOKPOWER G11", label: "ZBOOK Power G11" },
+    { value: "ZBOOKULTRA 14", label: "ZBOOK Ultra 14" },
+    { value: "ZBOOKFIREFLY 14", label: "ZBOOK Firefly 14" },
+    { value: "VOSTRO3480", label: "Vostro 3480" },
+    { value: "VOSTRO3490", label: "Vostro 3490" },
+    { value: "PRODESK400G3", label: "ProDesk 400 G3" },
+    { value: "PRODESK400G6", label: "ProDesk 400 G6" },
+
+    { value: "HPPRO3000SFF", label: "HP Pro 3000 SFF" },
+    { value: "HPSSF600G9", label: "HP Pro SFF G9" },
+    { value: "PAVILION15", label: "Pavilion 15" },
+
+    { value: "CARGADORHP45", label: "Cargador 65W" },
+    { value: "CARGADORHP65", label: "Cargador 45W" },
   ],
 };
 
@@ -117,7 +170,8 @@ const GENERICOS = [
   { value: "PREVENCION DE RIESGOS", label: "Prevención de Riesgos" },
   { value: "RECURSOS HUMANOS", label: "Recursos Humanos" },
   { value: "SEGURIDAD", label: "Seguridad" },
-  { value: "REGION", label: "Region" }
+  { value: "REGION", label: "Region" },
+  { value: "PANOLTI", label: "Panol TI" },
 ];
 const CIUDADES = [
   {
