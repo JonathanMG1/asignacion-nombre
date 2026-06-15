@@ -145,7 +145,6 @@ const GERENCIAS = [
   { value: "DISTRIBUCIÓN", label: "Distribución" },
   { value: "LOGISTICA", label: "Logística" },
   { value: "REGIONES", label: "Regiones" },
-  { value: "PANOLTI", label: "Panol TI" },
 ];
 const GENERICOS = [
   { value: "ADMINISTRACION Y FINANZAS", label: "Administración y finanzas" },
@@ -171,6 +170,10 @@ const GENERICOS = [
   { value: "SEGURIDAD", label: "Seguridad" },
   { value: "REGION", label: "Region" },
   { value: "PANOLTI", label: "Panol TI" },
+  { value: "LOGINVERS", label: "Logistica Inversa" },
+  { value: "LOGINHUB5", label: "Logistica Inversa HUB5" }
+
+  
 ];
 const CIUDADES = [
   {
@@ -215,7 +218,7 @@ const CIUDADES = [
   },
   {
     grupo: "HUB",
-    opciones: [{ value: "HUB", label: "HUB" }],
+    opciones: [{ value: "HUB 5", label: "HUB 5" }],
   },
 ];
 
