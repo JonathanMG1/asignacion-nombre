@@ -125,7 +125,8 @@ const MODELOS = {
     { value: "VOSTRO3490", label: "Vostro 3490" },
     { value: "PRODESK400G3", label: "ProDesk 400 G3" },
     { value: "PRODESK400G6", label: "ProDesk 400 G6" },
-
+    { value: "HP345G7", label: "HP 345 G7" },
+    { value: "HP345G8", label: "HP 345 G8" },
     { value: "HPPRO3000SFF", label: "HP Pro 3000 SFF" },
     { value: "HPSSF600G9", label: "HP Pro SFF G9" },
     { value: "PAVILION15", label: "Pavilion 15" },
@@ -171,9 +172,7 @@ const GENERICOS = [
   { value: "REGION", label: "Region" },
   { value: "PANOLTI", label: "Panol TI" },
   { value: "LOGINVERS", label: "Logistica Inversa" },
-  { value: "LOGINHUB5", label: "Logistica Inversa HUB5" }
-
-  
+  { value: "LOGINHUB5", label: "Logistica Inversa HUB5" },
 ];
 const CIUDADES = [
   {

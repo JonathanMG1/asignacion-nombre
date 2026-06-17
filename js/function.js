@@ -128,6 +128,19 @@ function copiarEquipo() {
     }, 2000);
   });
 }
+
+function copiar() {
+  const code = document.getElementById("result-code").textContent;
+  navigator.clipboard.writeText(code).then(function () {
+    const btn = document.getElementById("copy-btn");
+    btn.textContent = "¡Copiado!";
+    btn.classList.add("done");
+    setTimeout(function () {
+      btn.textContent = "Copiar nombre";
+      btn.classList.remove("done");
+    }, 2000);
+  });
+}
 function onMarcaChange() {
   const marca = document.getElementById("marca").value;
   const selectModelo = document.getElementById("modelo");
